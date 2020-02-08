@@ -11,30 +11,32 @@
     <p class="text-center red bolded">No offers were found that met the criteria</p>
     <h1 class="text-center">Interesting places</h1>
 
-    <?php for ($i = 1; $i <= 3; $i++): ?>
+    @foreach($objects->chunk(4) as $chunked_object) <!-- Lecture 14 -->
 
         <div class="row">
 
-            <?php for ($j = 1; $j <= 4; $j++): ?>
+            @foreach($chunked_object as $object) <!-- Lecture 14 -->
 
                 <div class="col-md-3 col-sm-6">
 
                     <div class="thumbnail">
-                        <img class="img-responsive" src="http://lorempixel.com/800/400/city/?x=<?= mt_rand(1, 9999999) ?>" alt="...">
+                        <img class="img-responsive" src="{{ $object->photos->first()->path }}" alt="..."> <!-- Lecture 14 src -->
                         <div class="caption">
-                            <h3>Lorem ipsum  <small>City</small> </h3>
-                            <p>Lorem impsum dolor sit amet. Lorem impsum dolor sit amet.</p>
-                            <p><a href="{{ route('object') }}" class="btn btn-primary" role="button">Details</a></p>
+                            <h3>{{ $object->name }} <!-- Lecture 14 -->  <small>{{ $object->city->name  }}<!-- Lecture 14 --></small> </h3>
+                            <p>{{ Str::limit($object->description,100) }}<!-- Lecture 14 --></p>
+                            <p><a href="{{ route('object',['id'=>$object->id]) }}" class="btn btn-primary" role="button">Details</a></p> <!-- Lecture 15 ['id'=>$object->id] -->
                         </div>
                     </div>
                 </div>
 
-            <?php endfor; ?>
+            @endforeach <!-- Lecture 14 -->
 
 
         </div>
 
-    <?php endfor; ?>
+    @endforeach <!-- Lecture 14 -->
+    
+    {{ $objects->links() }} <!-- Lecture 15 -->
 
 </div>
 @endsection <!-- Lecture 5  -->

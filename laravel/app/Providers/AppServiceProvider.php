@@ -1,12 +1,30 @@
 <?php
+/*
+|--------------------------------------------------------------------------
+| app/Providers/AppServiceProvider.php *** Copyright netprogs.pl | avaiable only at Udemy.com | further distribution is prohibited  ***
+|--------------------------------------------------------------------------
+*/
 
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View; /* Lecture 16 */
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        /* Lecture 16 */
+        View::composer('frontend.*', function ($view) {
+            $view->with('placeholder', asset('images/placeholder.jpg'));
+            });
+    }
+
     /**
      * Register any application services.
      *
@@ -15,19 +33,10 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         /* Lecture 13 */
-        $this->app->bind(\App\ProjektPizza\Interfaces\FrontendRepositoryInterface::class,function()
+        $this->app->bind(\App\Enjoythetrip\Interfaces\FrontendRepositoryInterface::class,function()
         {            
-            return new \App\ProjektPizza\Repositories\FrontendRepository;
+            return new \App\Enjoythetrip\Repositories\FrontendRepository;
         });
     }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        Schema::defaultStringLength(191);
-    }
 }
+
