@@ -8,14 +8,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Enjoythetrip\Interfaces\FrontendRepositoryInterface; /* Lecture 12 Lecture 13 FrontendRepositoryInterface  */
+use App\Enjoythetrip\Interfaces\FrontendRepositoryInterface;
+use App\Enjoythetrip\Gateways\FrontendGateway;
 
 class FrontendController extends Controller
 {
     /* Lecture 12 */
-    public function __construct(FrontendRepositoryInterface $frontendRepository) /* Lecture 13 FrontendRepositoryInterface */
+    public function __construct(FrontendRepositoryInterface $fR, FrontendGateway $fG) 
     {
-        $this->fR = $frontendRepository;
+        $this->fR = $fR;
+        $this->fG = $fG;
     }
     
     
@@ -57,6 +59,12 @@ class FrontendController extends Controller
     public function roomsearch()
     {
         return view('frontend.roomsearch');
+    }
+    
+    public function searchCities(Request $request)
+    {
+        $results = $this->fG->searchCities($request);
+        return response()->json($results);
     }
     
     

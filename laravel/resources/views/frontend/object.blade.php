@@ -70,7 +70,7 @@
                             <img class="img-responsive img-circle" src="{{ $room->photos->first()->path ?? $placeholder /* Lecture 16 */ }}" alt="...">
                             <div class="caption">
                                 <h3>Nr {{ $room->room_number}} <!-- Lecture 16 --></h3>
-                                <p>{{ str_limit($room->description,70) }} <!-- Lecture 16 --> </p>
+                                <p>{{ Str::limit($room->description,70) }} <!-- Lecture 16 --> </p>
                                 <p><a href="{{ route('room') }}" class="btn btn-primary" role="button">Details</a><a href="{{ route('room') }}#reservation" class="btn btn-success pull-right" role="button">Reservation</a></p>
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                 <p><b> {{ $article->user->FullName }} <!-- Lecture 16 --></b>
                     <i>{{ $article->created_at }} <!-- Lecture 16 --></i>
                 </p>
-                <p>{{ str_limit($article->content,250) }} <!-- Lecture 16 --> </p> <a href="{{ route('article') }}">More</a>
+                <p>{{ Str::limit($article->content,250) }} <!-- Lecture 16 --> </p> <a href="{{ route('article') }}">More</a>
             </div>
 
         @endforeach <!-- Lecture 16 -->

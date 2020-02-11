@@ -28,11 +28,11 @@ $(function () {
 
 $(function () {
     $(".autocomplete").autocomplete({
-        source: ["London", "New York", "Warsaw", "Berlin", "Auckland", "Johannesburg", "Dubai"],
+        source: base_url + "/searchCities",
         minLength: 2,
         select: function (event, ui) {
             
-//            console.log(ui.item.value);
+            console.log(ui.item.value);
         }
 
 

@@ -23,6 +23,8 @@ Route::get(trans('routes.roomsearch'),'FrontendController@roomsearch')->name('ro
 Route::get(trans('routes.room'),'FrontendController@room')->name('room'); /* Lecture 6 */
 Route::get(trans('routes.article'),'FrontendController@article')->name('article'); /* Lecture 6 */
 Route::get(trans('routes.person'),'FrontendController@person')->name('person'); /* Lecture 6 */
+
+Route::get('/searchCities','FrontendController@searchCities');
  
 
  
