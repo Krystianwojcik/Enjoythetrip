@@ -24,12 +24,15 @@ class FrontendRepository implements FrontendRepositoryInterface  {   /* Lecture 
     /* Lecture 15 */
     public function getObject($id)
     {
-        return TouristObject::with(['city', 'photos', 'address', 'users.photos', 'comments.user', 'articles.user', 'rooms.object.city'])->find($id); /* Lecture 15 */
+        return TouristObject::with(['city', 'photos', 'address', 'users.photos', 'comments.user', 'articles.user', 'rooms.object.city', 'rooms.photos'])->find($id); /* Lecture 15 */
     }
     
       
   public function getSearchCities(string $term) {
       return City::where('name', 'LIKE', $term.'%' )->get();
+  }   
+  public function getSearchResults(string $city) {
+      return City::where('name', $city)->get() ?? false;
   }
 }
 

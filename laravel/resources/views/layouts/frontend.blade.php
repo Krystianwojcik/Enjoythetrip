@@ -76,7 +76,7 @@
                 <h1>Enjoy the trip!</h1>
                 <p>A platform for tourists and owners of tourist facilities. Find the original place for the holidays!</p>
                 <p>Place your home on the site and let yourself be found by many tourists!</p>
-                <form action="{{ route('roomSearch') }}" class="form-inline">
+                <form method="post" action="{{ route('roomSearch') }}" class="form-inline">
                     <div class="form-group">
                         <label class="sr-only" for="city">City</label>
                         <input name="city" type="text" class="form-control autocomplete" id="city" placeholder="City">
@@ -101,7 +101,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-warning">Search</button>
-                    
+                    {{ csrf_field() }}
                     <!-- Lecture 6: deleted <input type="hidden" name="view" value="roomsearch"> -->
                        
                 </form>
