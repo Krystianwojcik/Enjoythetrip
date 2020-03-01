@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model; /* Lecture 12 */
 class TouristObject extends Model
 {
 
+    use Enjoythetrip\Presenters\ObjectPresenter;
+    
     protected $table = 'objects';
     
     /* Lecture 15 */

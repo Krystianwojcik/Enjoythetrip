@@ -45,9 +45,10 @@ class FrontendController extends Controller
     }
     
     /* Lecture 6 */
-    public function person()
+    public function person($id)
     {
-        return view('frontend.person');
+        $user = $this->fR->getPerson($id);
+        return view('frontend.person', ['user'=>$user]);
     }
     
     /* Lecture 6 */

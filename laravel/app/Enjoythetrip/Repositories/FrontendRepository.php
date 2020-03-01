@@ -8,7 +8,7 @@
 namespace App\Enjoythetrip\Repositories; /* Lecture 12 */
 
 use App\Enjoythetrip\Interfaces\FrontendRepositoryInterface;  /* Lecture 13 */
-use App\{TouristObject,City,Room,Reservation,Article}; /* Lecture 12 */
+use App\{TouristObject,City,Room,Reservation,Article,User}; /* Lecture 12 */
 
 /* Lecture 12 */
 class FrontendRepository implements FrontendRepositoryInterface  {   /* Lecture 13 implements FrontendRepositoryInterface */
@@ -64,6 +64,10 @@ class FrontendRepository implements FrontendRepositoryInterface  {   /* Lecture 
     public function getArticle( $id )
     {
         return  Article::with(['comments','object.photos'])->find($id); 
+    } 
+    public function getPerson($id)
+    {
+        return  User::with(['comments.commentable','objects', 'larticles'])->find($id); 
     } 
     
   
