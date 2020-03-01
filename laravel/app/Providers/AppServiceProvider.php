@@ -9,6 +9,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View; /* Lecture 16 */
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         /* Lecture 16 */
         View::composer('frontend.*', function ($view) {
             $view->with('placeholder', asset('images/placeholder.jpg'));
@@ -38,5 +40,7 @@ class AppServiceProvider extends ServiceProvider
             return new \App\Enjoythetrip\Repositories\FrontendRepository;
         });
     }
+    
+
 }
 

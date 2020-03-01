@@ -71,10 +71,7 @@
                             <div class="caption">
                                 <h3>Nr {{ $room->room_number}} <!-- Lecture 16 --></h3>
                                 <p>{{ Str::limit($room->description,70) }} <!-- Lecture 16 --> </p>
-                                <p>
-                                    <a href="{{ route('room', ['id'=>$room->id]) }}" class="btn btn-primary" role="button">Details</a>
-                                    <a href="{{ route('room', ['id'=>$room->id]) }}#reservation" class="btn btn-success pull-right" role="button">Reservation</a>
-                                </p>
+                                <p><a href="{{ route('room',['id'=>$room->id]/* Lecture 20 */) }}" class="btn btn-primary" role="button">Details</a><a href="{{ route('room',['id'=>$room->id]/* Lecture 20 */) }}#reservation" class="btn btn-success pull-right" role="button">Reservation</a></p>
                             </div>
                         </div>
                     </div>
@@ -154,7 +151,7 @@
                 <p><b> {{ $article->user->FullName }} <!-- Lecture 16 --></b>
                     <i>{{ $article->created_at }} <!-- Lecture 16 --></i>
                 </p>
-                <p>{{ Str::limit($article->content,250) }} <!-- Lecture 16 --> </p> <a href="{{ route('article') }}">More</a>
+                <p>{{ Str::limit($article->content,250) }} <!-- Lecture 16 --> </p> <a href="{{ route('article', ['id'=>$article->id]) }}">More</a>
             </div>
 
         @endforeach <!-- Lecture 16 -->
