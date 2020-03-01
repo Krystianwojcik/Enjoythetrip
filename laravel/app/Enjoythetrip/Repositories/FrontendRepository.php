@@ -8,7 +8,7 @@
 namespace App\Enjoythetrip\Repositories; /* Lecture 12 */
 
 use App\Enjoythetrip\Interfaces\FrontendRepositoryInterface;  /* Lecture 13 */
-use App\{TouristObject,City,Room,Reservation,Article,User}; /* Lecture 12 */
+use App\{TouristObject,City/*Lecture 17*/,Room/* Lecture 20 */,Reservation/* Lecture 20 */,Article/* Lecture 22 */,User/* Lecture 23 */}; /* Lecture 12 */
 
 /* Lecture 12 */
 class FrontendRepository implements FrontendRepositoryInterface  {   /* Lecture 13 implements FrontendRepositoryInterface */
@@ -60,15 +60,37 @@ class FrontendRepository implements FrontendRepositoryInterface  {   /* Lecture 
     {
         return  Reservation::where('room_id',$room_id)->get(); 
     } 
-    /* Lecture 20 */
-    public function getArticle( $id )
+    
+    
+    /* Lecture 22 */
+    public function getArticle($id)
     {
-        return  Article::with(['comments','object.photos'])->find($id); 
+        return  Article::with(['object.photos','comments'])->find($id);
     } 
+    
+    /* Lecture 23 */
     public function getPerson($id)
     {
-        return  User::with(['comments.commentable','objects', 'larticles'])->find($id); 
+        return  User::with(['objects','larticles','comments.commentable'])->find($id);
     } 
+    
+    
+    /* Lecture 24 */
+    public function like($likeable_id, $type, $request)
+    {
+        $likeable = $type::find($likeable_id);
+      
+        return $likeable->users()->attach($request->user()->id);
+    }
+    
+    /* Lecture 24 */
+    public function unlike($likeable_id, $type, $request)
+    {
+        $likeable = $type::find($likeable_id);
+      
+        return $likeable->users()->detach($request->user()->id);
+    }
+
     
   
 }

@@ -42,7 +42,7 @@
 
             <ul class="list-inline">
                 @foreach( $object->users as $user) <!-- Lecture 16 -->
-                    <li><a href="{{ route('person', ['id'=>$user->id]) }}"><img title="{{ $user->FullName /* Lecture 16 */ }}" class="media-object img-responsive" width="50" height="50" src="{{ $user->photos->first()->path ?? $placeholder /* Lecture 16 */ }}" alt="..."> </a></li>
+                    <li><a href="{{ route('person',['id'=>$user->id]/* Lecture 23 */) }}"><img title="{{ $user->FullName /* Lecture 16 */ }}" class="media-object img-responsive" width="50" height="50" src="{{ $user->photos->first()->path ?? $placeholder /* Lecture 16 */ }}" alt="..."> </a></li>
 
                 @endforeach <!-- Lecture 16 -->
             </ul>
@@ -90,7 +90,7 @@
         @foreach( $object->comments as $comment ) <!-- Lecture 16 -->
             <div class="media">
                 <div class="media-left media-top">
-                    <a title="{{ $comment->user->FullName /* Lecture 16 */ }}" href="{{ route('person', ['id'=>$comment->user->id]) }}">
+                    <a title="{{ $comment->user->FullName /* Lecture 16 */ }}" href="{{ route('person',['id'=>$comment->user->id]/* Lecture 23 */) }}">
                         <img class="media-object" width="50" height="50" src="{{ $comment->user->photos->first()->path ?? $placeholder /* Lecture 16 */ }}" alt="...">
                     </a>
                 </div>
@@ -151,13 +151,27 @@
                 <p><b> {{ $article->user->FullName }} <!-- Lecture 16 --></b>
                     <i>{{ $article->created_at }} <!-- Lecture 16 --></i>
                 </p>
-                <p>{{ Str::limit($article->content,250) }} <!-- Lecture 16 --> </p> <a href="{{ route('article', ['id'=>$article->id]) }}">More</a>
+                <p>{{ Str::limit($article->content,250) }} <!-- Lecture 16 --> </p> <a href="{{ route('article',['id'=>$article->id]/* Lecture 22 */) }}">More</a>
             </div>
 
         @endforeach <!-- Lecture 16 -->
     </section>
+    
+    <!-- Lecture 24 -->
+    @auth
+    
+        @if( $object->isLiked() )
+           <a href="{{ route('unlike',['likeable_id'=>$object->id,'type'=>'App\TouristObject']) }}" class="btn btn-primary btn-xs top-buffer">Unlike this object</a>
+        @else
+           <a href="{{ route('like',['likeable_id'=>$object->id,'type'=>'App\TouristObject']) }}" class="btn btn-primary btn-xs top-buffer">Like this object</a>
+        @endif 
+    
+    @else
+    
+    <p><a href="{{ route('login') }}">Login to like this object</a></p>
+  
+    @endauth
 
-    <a href="#" class="btn btn-primary btn-xs top-buffer">Like this object</a>
 </div>
 @endsection <!-- Lecture 5  -->
 
