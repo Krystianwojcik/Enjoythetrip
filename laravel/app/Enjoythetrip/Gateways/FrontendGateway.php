@@ -1,34 +1,48 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Enjoythetrip/Repositories/FrontendRepository.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/Enjoythetrip/Gateways/FrontendGateway.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
+namespace App\Enjoythetrip\Gateways; /* Lecture 17 */
 
-namespace App\Enjoythetrip\Gateways; 
-
-use App\Enjoythetrip\Interfaces\FrontendRepositoryInterface; 
+use App\Enjoythetrip\Interfaces\FrontendRepositoryInterface; /* Lecture 17 */ 
 
 
-class FrontendGateway  {  
-    public function __construct(FrontendRepositoryInterface $fR) {
+/* Lecture 17 */
+class FrontendGateway { 
+    
+    use \Illuminate\Foundation\Validation\ValidatesRequests; /* Lecture 25 */
+    
+     
+    /* Lecture 17 */
+    public function __construct(FrontendRepositoryInterface $fR ) 
+    {
         $this->fR = $fR;
     }
-
+    
+    
+    /* Lecture 17 */
     public function searchCities($request)
     {
-       $term = $request->input('term');
-        $result = [];
-       $queries = $this->fR->getSearchCities($term);
-        foreach($queries as $query) {
-            $result = ['id'=>$query->id, 'value'=>$query->name];
+        $term = $request->input('term');
+
+        $results = array();
+
+        $queries = $this->fR->getSearchCities($term);
+
+        foreach ($queries as $query)
+        {
+            $results[] = ['id' => $query->id, 'value' => $query->name];
         }
-        return $result;
+
+        return $results;
     } 
+    
+    
+    /* Lecture 18 */
     public function getSearchResults($request)
     {
-
-        $request->flash(); // inputs for session for one request
 
         if( $request->input('city') != null)
         {
@@ -78,6 +92,8 @@ class FrontendGateway  {
 
                 }
 
+                $request->flash(); // inputs for session for one request
+
                 /* Lecture 19 */
                 if(count($result->rooms)> 0)
                 return $result;  // filtered result
@@ -90,6 +106,20 @@ class FrontendGateway  {
         return false;
 
     }
+    
+    
+    /* Lecture 25 */
+    public function addComment($commentable_id, $type, $request)
+    {
+        $this->validate($request,[
+            'content'=>"required|string"
+        ]);
+        
+        return $this->fR->addComment($commentable_id, $type, $request);
+    }
+    
+    
+    
 
 }
 

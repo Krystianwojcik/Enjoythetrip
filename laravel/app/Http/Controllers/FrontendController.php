@@ -116,5 +116,14 @@ class FrontendController extends Controller
     }
     
     
+    /* Lecture 25 */
+    public function addComment($commentable_id, $type, Request $request)
+    {
+        $this->fG->addComment($commentable_id, $type, $request);
+        
+        return redirect()->back();
+    }
+    
+    
 }
 

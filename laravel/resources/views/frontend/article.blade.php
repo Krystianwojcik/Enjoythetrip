@@ -62,15 +62,22 @@
     
     
     <br><br>
-
+    
+    <!-- Lecture 25 -->
+    @auth
     <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
         Add comment
     </a>
+    @else
+    <p><a href="{{ route('login') }}">Login to add a comment</a></p>
+    @endauth
+
+
     <div class="collapse" id="collapseExample2">
         <div class="well">
 
 
-            <form method="POST" class="form-horizontal">
+            <form method="POST" action="{{ route('addComment',['article_id'=>$article->id, 'App\Article']) /* Lecture 25 */ }}" class="form-horizontal">
                 <fieldset>
 
                     <div class="form-group">
@@ -87,6 +94,7 @@
                         </div>
                     </div>
                 </fieldset>
+                {{ csrf_field() }} <!-- Lecture 25 -->
             </form>
 
         </div>
