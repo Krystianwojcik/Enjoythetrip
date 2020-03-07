@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Enjoythetrip/Repositories/FrontendRepository.php *** Copyright netprogs.pl | avaiable only at Udemy.com | further distribution is prohibited  ***
+| app/Enjoythetrip/Repositories/FrontendRepository.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
 
@@ -106,6 +106,20 @@ class FrontendRepository implements FrontendRepositoryInterface  {   /* Lecture 
         $comment->user_id = $request->user()->id;
         
         return $commentable->comments()->save($comment);
+    }
+    
+    
+    /* Lecture 26 */
+    public function makeReservation($room_id, $city_id, $request)
+    {
+        return Reservation::create([
+                'user_id'=>$request->user()->id,
+                'city_id'=>$city_id,
+                'room_id'=>$room_id,
+                'status'=>0,
+                'day_in'=>date('Y-m-d', strtotime($request->input('checkin'))),
+                'day_out'=>date('Y-m-d', strtotime($request->input('checkout')))
+            ]);
     }
 
     

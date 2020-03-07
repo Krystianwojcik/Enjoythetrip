@@ -7,7 +7,7 @@
 
 @section('content') <!-- Lecture 5  -->
 <div class="container places">
-    <h1 class="text-center">Room in <a href="{{ route('object',[$room->object_id]) }}">{{ $room->object->name  }}</a> object</h1>
+    <h1 class="text-center">Room in <a href="{{ route('object',['room'=>$room->object_id]/* Lecture 20 */) }}">{{ $room->object->name /* Lecture 20 */ }}</a> object</h1>
 
     @foreach( $room->photos->chunk(3) as $chunked_photos ) <!-- Lecture 20 -->
 
@@ -16,7 +16,7 @@
             @foreach($chunked_photos as $photo) <!-- Lecture 20 -->
             
             <div class="col-md-4">
-                <img class="img-responsive" src="{{ $photo->path ?? $placeholder   }}" alt="">
+                <img class="img-responsive" src="{{ $photo->path ?? $placeholder /* Lecture 20 */  }}" alt="">
             </div>
             
             @endforeach <!-- Lecture 20 -->
@@ -30,16 +30,16 @@
 
         <ul class="list-group">
             <li class="list-group-item">
-                <span class="bolded">Description:</span> {{ $room->description  }}
+                <span class="bolded">Description:</span> {{ $room->description /* Lecture 20 */ }}
             </li>
             <li class="list-group-item">
-                <span class="bolded">Room size:</span> {{ $room->room_size  }}
+                <span class="bolded">Room size:</span> {{ $room->room_size /* Lecture 20 */ }}
             </li>
             <li class="list-group-item">
-                <span class="bolded">Price per night:</span> {{ $room->price  }} USD
+                <span class="bolded">Price per night:</span> {{ $room->price /* Lecture 20 */ }} USD
             </li>
             <li class="list-group-item">
-                <span class="bolded">Address:</span> {{ $room->object->city->name  }} {{ $room->object->address->street  }} nr {{ $room->object->address->number  }}
+                <span class="bolded">Address:</span> {{ $room->object->city->name /* Lecture 20 */ }} {{ $room->object->address->street /* Lecture 20 */ }} nr {{ $room->object->address->number /* Lecture 20 */ }}
             </li>
         </ul>
     </section>
@@ -50,7 +50,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <form method="POST">
+                <form action="{{ route('makeReservation',['room_id'=>$room->id,'city_id'=>$room->object->city->id]) /* Lecture 26 */}}" method="POST">
                     <div class="form-group">
                         <label for="checkin">Check in</label>
                         <input required name="checkin" type="text" class="form-control datepicker" id="checkin" placeholder="">
@@ -60,7 +60,8 @@
                         <input required name="checkout" type="text" class="form-control datepicker" id="checkout" placeholder="">
                     </div>
                     <button type="submit" class="btn btn-primary">Book</button> 
-                    <p class="text-danger">There are no vacancies</p>
+                    <p class="text-danger">{{ Session::get('reservationMsg') /* Lecture 26 */}}</p>
+                    {{ csrf_field() }} <!-- Lecture 26 -->
                 </form>
             </div><br>
             <div class="col-md-6">
@@ -78,9 +79,9 @@
 
 <!-- Lecture 20 -->
 <script>
-    
-    
-  function datesBetween(startDt, endDt) {
+ 
+/* Lecture 21 */
+function datesBetween(startDt, endDt) {
     var between = [];
     var currentDate = new Date(startDt);
     var end = new Date(endDt);
@@ -109,7 +110,13 @@ $.ajax({
         {
             dates.push(datesBetween(new Date(response.reservations[i].day_in), new Date(response.reservations[i].day_out))); // array of arrays
         }
-    
+        
+        
+        /*  a = [1];
+            b = [2];
+            x = a.concat(b);
+            x = [1,2];
+            [ [1],[2],[3] ] => [1,2,3]  */
         dates = [].concat.apply([], dates); /* Lecture 21 */   // flattened array
 
         /* Lecture 21 */
@@ -141,6 +148,7 @@ $.ajax({
                 beforeShowDay: function (date)
                 {
                     var tmp =  eventDates[$.datepicker.formatDate('mm/dd/yy', date)]; /* Lecture 21 */
+                    //console.log(date);
                     if (tmp)
                         return [false, 'unavaiable_date'];
                     else
