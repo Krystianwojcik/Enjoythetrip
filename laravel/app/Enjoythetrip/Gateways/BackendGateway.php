@@ -11,22 +11,32 @@ use App\Enjoythetrip\Interfaces\BackendRepositoryInterface; /* Lecture 17 */
 
 /* Lecture 17 */
 class BackendGateway { 
-        
-     
-    /* Lecture 17 */
+    
+
     public function __construct(BackendRepositoryInterface $bR ) 
     {
         $this->bR = $bR;
     }
     
-    public function getReservations($request) {
-        if($request->user()->hasRole(['owner', 'admin'])) {
+    
+    
+    public function getReservations($request)
+    {
+        if ($request->user()->hasRole(['owner','admin']))
+        {
+
             $objects = $this->bR->getOwnerReservations($request);
-        } else {
+
+        }
+        else
+        {
+            
             $objects = $this->bR->getTouristReservations($request);
         }
+        
         return $objects;
     }
+    
 
 }
 

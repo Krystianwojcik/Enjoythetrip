@@ -1,15 +1,18 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Enjoythetrip/Repositories/FrontendRepository.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/Enjoythetrip/Repositories/BackendRepository.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
 
-namespace App\Enjoythetrip\Repositories;
-use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;
+namespace App\Enjoythetrip\Repositories; /* Lecture 27 */
 
+use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;  /* Lecture 27 */
+use App\{TouristObject/* Lecture 28 */};
 
-class BackendRepository implements BackendRepositoryInterface  {
+/* Lecture 27 */
+class BackendRepository implements BackendRepositoryInterface  {   
+    
     
     /* Lecture 28 */
     public function getOwnerReservations($request)
@@ -61,3 +64,5 @@ class BackendRepository implements BackendRepositoryInterface  {
  
   
 }
+
+

@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/User.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/User.php *** Copyright netprogs.pl | avaiable only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
 
@@ -42,6 +42,7 @@ class User extends Authenticatable
         return $this->morphedByMany('App\TouristObject', 'likeable');
     }
     
+    
     /* Lecture 22 */
     public function larticles()
     {
@@ -53,31 +54,44 @@ class User extends Authenticatable
     {
         return $this->morphMany('App\Photo', 'photoable');
     }
+    
     /* Lecture 23 */
     public function comments()
     {
         return $this->hasMany('App\Comment');
     }
-    public function rolse()
+    
+    /* Lecture 27 */
+    public function roles()
     {
         return $this->belongsToMany('App\Role');
     }
     
+    
+    /* Lecture 27 */
     public function hasRole(array $roles)
     {
+
         foreach($roles as $role)
         {
+            
             if(isset(self::$roles[$role])) 
             {
                 if(self::$roles[$role])  return true;
+
             }
             else
             {
                 self::$roles[$role] = $this->roles()->where('name', $role)->exists();
                 if(self::$roles[$role]) return true;
             }
+            
         }
+        
+
         return false;
+ 
     }
+    
 }
 

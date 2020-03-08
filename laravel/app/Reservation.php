@@ -16,7 +16,7 @@ class Reservation extends Model
     protected $guarded = ['id']; /* Lecture 26 */
     //protected $fillable = ['name']; /* Lecture 26 */
     
-    function public user() {
+    public function user() {
         return $this->belongsTo('App\User');
     }
 }
