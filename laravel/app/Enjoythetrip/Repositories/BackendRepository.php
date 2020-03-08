@@ -8,7 +8,7 @@
 namespace App\Enjoythetrip\Repositories; /* Lecture 27 */
 
 use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;  /* Lecture 27 */
-use App\{TouristObject/* Lecture 28 */};
+use App\{TouristObject/* Lecture 28 */,Reservation/* Lecture 30 */};
 
 /* Lecture 27 */
 class BackendRepository implements BackendRepositoryInterface  {   
@@ -60,6 +60,16 @@ class BackendRepository implements BackendRepositoryInterface  {
 
                     })
                     ->get();
+    }
+    
+    /* Lecture 30 */
+    public function getReservationData($request)
+    {
+        return  Reservation::with('user', 'room')
+                ->where('room_id', $request->input('room_id'))
+                ->where('day_in', '<=', date('Y-m-d', strtotime($request->input('date'))))
+                ->where('day_out', '>=', date('Y-m-d', strtotime($request->input('date'))))
+                ->first();
     }
  
   

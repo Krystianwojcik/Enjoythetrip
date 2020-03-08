@@ -41,7 +41,9 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){  /* Lecture 6 
   Route::get(trans('routes.saveobject'),'BackendController@saveObject')->name('saveObject'); /* Lecture 6 */  
   Route::get(trans('routes.profile'),'BackendController@profile')->name('profile'); /* Lecture 6 */  
   Route::get(trans('routes.saveroom'),'BackendController@saveRoom')->name('saveRoom'); /* Lecture 6 */  
-  Route::get('/cities','BackendController@cities')->name('cities.index'); /* Lecture 6 */  
+  Route::get('/cities','BackendController@cities')->name('cities.index'); /* Lecture 6 */ 
+  
+  Route::get('/ajaxGetReservationData', 'BackendController@ajaxGetReservationData'); /* Lecture 30 */
     
     
 });

@@ -8,23 +8,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;
-use App\Enjoythetrip\Gateways\BackendGateway;
+
+use App\Enjoythetrip\Interfaces\BackendRepositoryInterface; /* Lecture 27 */
+use App\Enjoythetrip\Gateways\BackendGateway; /* Lecture 27 */
 
 class BackendController extends Controller
 {
-    public function __construct(BackendRepositoryInterface $backendRepository, BackendGateway $backendGateway)
+    use \App\Enjoythetrip\Traits\Ajax; /* Lecture 30 */
+    
+    /* Lecture 27 */
+    public function __construct(BackendGateway $backendGateway, BackendRepositoryInterface $backendRepository)
     {
-        
-
+        $this->bG = $backendGateway;
         $this->bR = $backendRepository;
-        $this->bG = $backendGateway; /* Lecture 17 */
     }
+    
+    
     /* Lecture 6 */
-    public function index(Request $request)
+    public function index(Request $request /* Lecture 27 */)
     {
-        $objects = $this->bG->getReservations($request);
-        return view('backend.index', ['objects'=>$objects]);
+        $objects = $this->bG->getReservations($request); /* Lecture 27 */
+        return view('backend.index',['objects'=>$objects]/* Lecture 27 */);
     }
     
     /* Lecture 6 */
@@ -57,3 +61,4 @@ class BackendController extends Controller
         return view('backend.saveroom');
     }
 }
+
