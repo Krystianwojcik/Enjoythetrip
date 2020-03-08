@@ -14,6 +14,8 @@ class User extends Authenticatable
 {
     use Notifiable;
     use Enjoythetrip\Presenters\UserPresenter;
+    
+    public static $roles = []; /* Lecture 27 */
 
     /**
      * The attributes that are mass assignable.
@@ -55,6 +57,27 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+    public function rolse()
+    {
+        return $this->belongsToMany('App\Role');
+    }
+    
+    public function hasRole(array $roles)
+    {
+        foreach($roles as $role)
+        {
+            if(isset(self::$roles[$role])) 
+            {
+                if(self::$roles[$role])  return true;
+            }
+            else
+            {
+                self::$roles[$role] = $this->roles()->where('name', $role)->exists();
+                if(self::$roles[$role]) return true;
+            }
+        }
+        return false;
     }
 }
 

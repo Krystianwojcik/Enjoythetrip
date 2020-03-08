@@ -8,13 +8,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;
+use App\Enjoythetrip\Gateways\BackendGateway;
 
 class BackendController extends Controller
 {
-    /* Lecture 6 */
-    public function index()
+    public function __construct(BackendRepositoryInterface $backendRepository, BackendGateway $backendGateway)
     {
-        return view('backend.index');
+        
+
+        $this->bR = $backendRepository;
+        $this->bG = $backendGateway; /* Lecture 17 */
+    }
+    /* Lecture 6 */
+    public function index(Request $request)
+    {
+        $objects = $this->bG->getReservations($request);
+        return view('backend.index', ['objects'=>$objects]);
     }
     
     /* Lecture 6 */
