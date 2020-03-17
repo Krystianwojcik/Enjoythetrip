@@ -31,6 +31,12 @@ class TouristObject extends Model
         return $this->belongsTo('App\City');
     }
     
+    /* Lecture 35 */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+    
     /* Lecture 14 */
     public function photos()
     {

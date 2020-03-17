@@ -20,48 +20,53 @@
     @push('scripts')
     <script>
 
-    var eventDates = {};
-    var datesConfirmed = ['12/12/2017', '12/13/2017', '12/14/2017'];
-    var datesnotConfirmed = ['12/20/2017', '12/21/2017', '12/22/2017', '12/25/2017'];
+    var eventDates{{ $o.$r }} = {}; /* Lecture 32 $o.$r */
+    var datesConfirmed{{ $o.$r }} = []; /* Lecture 32 */
+    var datesnotConfirmed{{ $o.$r }} = [];/* Lecture 32 */
+    
+    /* Lecture 32 */
+    @foreach($room->reservations as $reservation)
+
+        @if ($reservation->status)
+                datesConfirmed{{$o.$r}}.push(datesBetween(new Date('{{$reservation->day_in}}'), new Date('{{$reservation->day_out}}')));
+        @else
+                datesnotConfirmed{{$o.$r}}.push(datesBetween(new Date('{{$reservation->day_in}}'), new Date('{{$reservation->day_out}}')));
+        @endif
+
+    @endforeach
+    
+    datesConfirmed{{$o.$r}} = [].concat.apply([], datesConfirmed{{$o.$r}}); /* Lecture 32 */
+    datesnotConfirmed{{$o.$r}} = [].concat.apply([], datesnotConfirmed{{$o.$r}}); /* Lecture 32 */
 
 
-    for (var i = 0; i < datesConfirmed.length; i++)
+    for (var i = 0; i < datesConfirmed{{ $o.$r }}.length; i++) /* Lecture 32 $o.$r */
     {
-        eventDates[ datesConfirmed[i] ] = 'confirmed';
+        eventDates{{ $o.$r }}[ datesConfirmed{{ $o.$r }}[i] ] = 'confirmed'; /* Lecture 32 $o.$r */
     }
 
-    var tmp = {};
-    for (var i = 0; i < datesnotConfirmed.length; i++)
+    var tmp{{ $o.$r }} = {}; /* Lecture 32 $o.$r */
+    for (var i = 0; i < datesnotConfirmed{{ $o.$r }}.length; i++) /* Lecture 32 $o.$r */
     {
-        tmp[ datesnotConfirmed[i] ] = 'notconfirmed';
+        tmp{{ $o.$r }}[ datesnotConfirmed{{ $o.$r }}[i] ] = 'notconfirmed'; /* Lecture 32 $o.$r */
     }
 
 
-    Object.assign(eventDates, tmp);
+    Object.assign(eventDates{{ $o.$r }}, tmp{{ $o.$r }});  /* Lecture 32 $o.$r */
 
 
     $(function () {
-        $(".reservation_calendar").datepicker({
-            onSelect: function (data) {
+        $(".reservation_calendar" + {{ $o.$r }}/* Lecture 32 */).datepicker({
+            onSelect: function (date/* Lecture 32 data->date */) {
+
+                $('.hidden_' + {{ $o.$r }}).hide(); /* Lecture 32 $o.$r */
+                $('.loader_' + {{ $o.$r }}).show(); /* Lecture 32 $o.$r */
                 
-                //App.GetReservationData(id); /* Lecture 30 */
-
-                var a = $(this).attr('id');
-
-                $('.hidden_' + a).hide();
-                $('.loader_' + a).show();
-
-                setTimeout(function () {
-
-                    $('.loader_' + a).hide();
-                    $('.hidden_' + a).show();
-
-                }, 1000);
+                App.GetReservationData({{ $room->id }}, {{ $o.$r }}, date ); /* Lecture 32 */
 
             },
             beforeShowDay: function (date)
             {
-                var tmp = eventDates[ $.datepicker.formatDate('mm/dd/yy', date)];
+                var tmp = eventDates{{ $o.$r }}[ $.datepicker.formatDate('mm/dd/yy', date)]; /* Lecture 32 $o.$r */
     //            console.log(tmp);
                 if (tmp)
                 {
@@ -118,10 +123,10 @@
                                     <td><a class="reservation_data_person" target="_blank" href=""></a></td> <!-- Lecture 30 class -->
                                     <!-- Lecture 29 -->
                                     @if( Auth::user()->hasRole(['admin','owner']) )
-                                    <td><a href="#" class="btn btn-primary btn-xs reservation_data_confirm_reservation">Confirm</a></td> <!-- Lecture 30 css class -->
+                                    <td><a href="#" class="btn btn-primary btn-xs reservation_data_confirm_reservation keep_pos <?php /* Lecture 34 */?>">Confirm</a></td> <!-- Lecture 30 css class -->
                                     @endif
                                     
-                                    <td><a class="reservation_data_delete_reservation" href=""><span class="glyphicon glyphicon-remove"></span></a></td> <!-- Lecture 30 css class -->
+                                    <td><a class="reservation_data_delete_reservation keep_pos <?php /* Lecture 34 */?>" href=""><span class="glyphicon glyphicon-remove"></span></a></td> <!-- Lecture 30 css class -->
                                 </tr>
                             </tbody>
                         </table>

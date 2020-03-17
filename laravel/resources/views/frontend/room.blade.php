@@ -50,7 +50,7 @@
 
         <div class="row">
             <div class="col-md-6">
-                <form action="{{ route('makeReservation',['room_id'=>$room->id,'city_id'=>$room->object->city->id]) /* Lecture 26 */}}" method="POST">
+                <form {{ $novalidate /* Lecture 34 */ }} action="{{ route('makeReservation',['room_id'=>$room->id,'city_id'=>$room->object->city->id]) /* Lecture 26 */}}" method="POST">
                     <div class="form-group">
                         <label for="checkin">Check in</label>
                         <input required name="checkin" type="text" class="form-control datepicker" id="checkin" placeholder="">
@@ -59,7 +59,14 @@
                         <label for="checkout">Check out</label>
                         <input required name="checkout" type="text" class="form-control datepicker" id="checkout" placeholder="">
                     </div>
-                    <button type="submit" class="btn btn-primary">Book</button> 
+
+		     <!-- Lecture 34 -->	
+                    @if(Auth::guest())
+                    <p><a href="{{ route('login') }}">Log in to make a reservation</a></p>
+                    @else
+                    <button type="submit" class="btn btn-primary">Book</button>
+                    @endif
+
                     <p class="text-danger">{{ Session::get('reservationMsg') /* Lecture 26 */}}</p>
                     {{ csrf_field() }} <!-- Lecture 26 -->
                 </form>

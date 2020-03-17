@@ -30,10 +30,24 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+       
         
         <!-- Lecture 27 -->
         <script>
-        var base_url = '{{ url('/') }}';
+        var base_url = '{{ url('/admin') }}'; <?php /* Lecture 32 admin argument */?>
+        
+
+        <!-- Lecture 34 -->
+        <?php
+        if (isset($_COOKIE['scroll_val'])) {
+
+            echo 'var scroll_val=' . '"' . (int) $_COOKIE['scroll_val'] . '";';
+
+            setcookie('scroll_val', '', -3000);
+        }
+        ?>
+
         </script>
         
     </head>
@@ -64,9 +78,22 @@
                                 <li><a href="#">Your reservation for room number 10 in the X object on 08/28/2017 has been canceled</a></li>
                             </ul>
                         </li>
-                        <li><p class="navbar-text">John Doe</p></li>
+                        <li><p class="navbar-text">{{ Auth::user()->FullName /* Lecture 34 */ }}</p></li>
                         <li><a href="{{ route('profile') }}">Profile</a></li>
-                        <li><a href="#">Logout</a></li>
+                        
+                        <!-- Lecture 34 -->
+                        <li>
+                            <a href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                       document.getElementById('logout-form').submit();">
+                                Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>
@@ -86,14 +113,18 @@
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
 
+                    <br> <!-- Lecture 35 -->
 
-                    <!--<br>
-                    <div class="alert alert-dismissible show" role="alert">
+                    <!-- Lecture 35 -->
+                    @if(Session::has('message'))
+                    <br>
+                    <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible show" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-
-                    </div>-->
+                        {{ Session::get('message') }}
+                    </div>
+                    @endif
 
                     @yield('content') <!-- Lecture 5 -->
                 </div>
@@ -102,6 +133,7 @@
 
         <!-- Bootstrap core JavaScript
         ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
@@ -109,6 +141,36 @@
         <script src="{{ asset('js/app.js') }}"></script> <!-- Lecture 5 -->
         <script src="{{ asset('js/admin.js') }}"></script> <!-- Lecture 5 -->
         @stack('scripts') <!-- Lecture 30 -->
+        
+       <!-- Lecture 34 -->
+        <script>
+
+        $(function () {
+
+
+        //to prevent scroll top when refreshing
+        if (typeof scroll_val !== 'undefined') {
+
+            $(window).scrollTop(scroll_val);
+            //scroll(0,scroll_val);
+        }
+
+        });
+
+
+        //to prevent scroll top when refreshing
+        function scroll_value()
+        {
+            document.cookie = 'scroll_val' + '=' + $(window).scrollTop();
+        }
+
+
+        $(document).on('click', '.keep_pos', function (e) {
+            scroll_value();
+        });
+
+        </script>
+        
     </body>
 </html>
 

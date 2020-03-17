@@ -71,6 +71,27 @@ class BackendRepository implements BackendRepositoryInterface  {
                 ->where('day_out', '>=', date('Y-m-d', strtotime($request->input('date'))))
                 ->first();
     }
+    
+    
+    /* Lecture 35 */
+    public function getReservation($id)
+    {
+        return Reservation::find($id);
+    }
+    
+    
+    /* Lecture 35 */
+    public function deleteReservation(Reservation $reservation)
+    {
+        return $reservation->delete();
+    }
+    
+    
+    /* Lecture 35 */
+    public function confirmReservation(Reservation $reservation)
+    {
+        return $reservation->update(['status' => true]);
+    }
  
   
 }
