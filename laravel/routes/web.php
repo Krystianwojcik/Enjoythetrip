@@ -15,13 +15,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/clear-cache', function() {
-    Artisan::call('cache:clear');
-    Artisan::call('route:clear');
-    Artisan::call('config:clear ');
-    Artisan::call('view:clear ');
-    return "Cache is cleared";
-});
+
 
 Route::get('/','FrontendController@index')->name('home'); /* Lecture 6 */
 Route::get(trans('routes.object').'/{id}','FrontendController@object')->name('object'); /* Lecture 5 Lecture 15 {id}  */
@@ -47,12 +41,13 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){  /* Lecture 6 
   Route::get(trans('routes.saveobject'),'BackendController@saveObject')->name('saveObject'); /* Lecture 6 */  
   Route::get(trans('routes.profile'),'BackendController@profile')->name('profile'); /* Lecture 6 */  
   Route::get(trans('routes.saveroom'),'BackendController@saveRoom')->name('saveRoom'); /* Lecture 6 */  
-  Route::get('/cities','BackendController@cities')->name('cities.index'); /* Lecture 6 */ 
   
   Route::get('/ajaxGetReservationData', 'BackendController@ajaxGetReservationData'); /* Lecture 30 */
   
   Route::get('/confirmReservation/{id}', 'BackendController@confirmReservation')->name('confirmReservation'); /* Lecture 33 */
   Route::get('/deleteReservation/{id}', 'BackendController@deleteReservation')->name('deleteReservation'); /* Lecture 33 */
+  
+  Route::resource('cities', 'CityController'); /* Lecture 37 */
     
     
 });

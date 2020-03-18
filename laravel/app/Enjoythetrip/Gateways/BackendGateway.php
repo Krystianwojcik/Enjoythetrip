@@ -12,6 +12,9 @@ use App\Enjoythetrip\Interfaces\BackendRepositoryInterface; /* Lecture 27 */
 /* Lecture 27 */
 class BackendGateway { 
     
+    
+    use \Illuminate\Foundation\Validation\ValidatesRequests; /* Lecture 37 */
+    
 
     public function __construct(BackendRepositoryInterface $bR ) 
     {
@@ -35,6 +38,28 @@ class BackendGateway {
         }
         
         return $objects;
+    }
+    
+    
+    /* Lecture 37 */
+    public function createCity($request)
+    {
+        $this->validate($request,[
+        'name'=>"required|string|unique:cities",
+        ]);
+        
+        $this->bR->createCity($request);
+    }
+    
+    
+    /* Lecture 37 */
+    public function updateCity($request, $id)
+    {
+        $this->validate($request,[
+        'name'=>"required|string|unique:cities",
+        ]);
+        
+        $this->bR->updateCity($request, $id);
     }
     
 
