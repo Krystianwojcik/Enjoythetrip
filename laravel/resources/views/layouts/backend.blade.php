@@ -104,9 +104,13 @@
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <li class="active"><a href="{{ route('adminHome') }}">Booking calendar <span class="sr-only">(current)</span></a></li>
+                        @if( Auth::user()->hasRole(['owner', 'admin']))
                         <li><a href="{{ route('myObjects') }}">My tourist objects</a></li>
                         <li><a href="{{ route('saveObject') }}">Add a new tourist object</a></li>
+                        @endif
+                        @if( Auth::user()->hasRole(['admin']))
                         <li><a href="{{ route('cities.index') }}">Cities</a></li>
+                        @endif
                     </ul>
                 </div>
 

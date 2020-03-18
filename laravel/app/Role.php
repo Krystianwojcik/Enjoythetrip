@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Model; /* Lecture 27 */
 /* Lecture 27 */
 class Role extends Model
 {
+    
+    protected $quarded = [];
+public $timestamps = false;
     public function users()
     {
         return $this->belongsToMany('App\User');

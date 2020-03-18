@@ -15,7 +15,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear ');
+    Artisan::call('view:clear ');
+    return "Cache is cleared";
+});
 
 Route::get('/','FrontendController@index')->name('home'); /* Lecture 6 */
 Route::get(trans('routes.object').'/{id}','FrontendController@object')->name('object'); /* Lecture 5 Lecture 15 {id}  */
