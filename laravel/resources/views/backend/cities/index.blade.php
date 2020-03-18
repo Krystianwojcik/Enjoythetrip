@@ -7,7 +7,7 @@
 
  <!-- Lecture 37 -->
 @section('content')
-<h1>Cities <small><a class="btn btn-success" href="#" data-type="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>New city </a></small></h1>
+<h1>Cities <small><a class="btn btn-success" href="{{ route('cities.create') }}" data-type="button"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>New city </a></small></h1>
 
 <div class="table-responsive">
     <table class="table table-hover table-striped">
@@ -15,24 +15,23 @@
             <th>City name</th>
             <th>Edit / Delete</th>
         </tr>
-        <?php for($i=1;$i<=10;$i++): ?>
+        @foreach($cities as $city )
             <tr>
-                <td>Paris</td>
+                <td>{{ $city->name }}</td>
                 <td>
-                    <a href=""><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-                    <a onclick="return confirm('Are you sure?');" href=""><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                    <a href="{{ route('cities.edit',['city'=>$city->id]) }}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                    <form style="display: inline;" method="post" action="{{ route('cities.destroy', ['city'=>$city->id]) }}">
+                    <button type="submit" class="btn btn-primary btn-xs" onclick="return confirm('Are you sure?');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                    {{ method_field('DELETE') }}
+                    {{ csrf_field() }}
+                    
+                    </form>
                 </td>
             </tr>
-        <?php endfor; ?>
+        @endforeach
     </table>
 </div>
 
 
 
-<h1>Create / edit new city</h1>
-<form method="POST" action="#">
-<h3>Name * </h3>
-<input class="form-control" type="text" required name="name"><br>
-<button class="btn btn-primary" type="submit">Create</button>
-</form>
 @endsection

@@ -9,10 +9,12 @@
 @section('content')
 
 <h1>Edit city</h1>
-<form method="POST" action="#">
+<form {{$novalidate}} method="POST" action="{{ route('cities.update', ['city'=>$city->id]) }}">
 <h3>Name * </h3>
-<input class="form-control" type="text" required name="name"><br>
-<button class="btn btn-primary" type="submit">Create</button>    
+<input class="form-control" value="{{ $city->name }}" type="text" required name="name"><br>
+<button class="btn btn-primary" type="submit">Zapisz</button>   
+{{csrf_field()}}
+{{method_field('PUT')}}
 </form>
 
 @endsection
