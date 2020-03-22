@@ -62,6 +62,27 @@ class BackendGateway {
         $this->bR->updateCity($request, $id);
     }
     
+    
+    /* Lecture 39 */
+    public function saveUser($request)
+    {
+        $this->validate($request,[
+        'name'=>"required|string",
+        'surname'=>"required|string",
+        'email'=>"required|email",
+        ]);
+        
+        if ($request->hasFile('userPicture'))
+        {
+            $this->validate($request,[
+            'userPicture'=>"image|max:100",
+
+            ]);
+        }
+        
+        return $this->bR->saveUser($request);
+    }
+    
 
 }
 
