@@ -98,9 +98,25 @@ class BackendController extends Controller
     
     
     /* Lecture 6 */
-    public function saveobject()
+    public function saveobject($id = null, Request $request)
     {
-        return view('backend.saveobject');
+        if($request->isMethod('post')) {
+            if($id) {
+                $this->authorize('checkOwner', $this->bR->getObject($id));
+            }
+            $this->bG->saveObject($id,$request);
+            
+            if($id) {
+                return redirect()->back();
+            } else {
+                return redirect()->route('myObjects');
+            }
+        }
+        if($id) {
+            return view('backend.saveobject', ['object'=>$this->bR->getObject($id), 'cities'=>$this->bR->getCities()]);
+        } else {
+            return view('backend.saveobject', ['cities'=>$this->bR->getCities()]);
+        }
     }
     
     /* Lecture 6 */

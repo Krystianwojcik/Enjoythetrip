@@ -8,7 +8,7 @@
 namespace App\Enjoythetrip\Repositories; /* Lecture 27 */
 
 use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;  /* Lecture 27 */
-use App\{TouristObject/* Lecture 28 */,Reservation/* Lecture 30 */,City/* Lecture 37 */,User/* Lecture 39 */,Photo/* Lecture 40 */};
+use App\{TouristObject/* Lecture 28 */,Reservation/* Lecture 30 */,City/* Lecture 37 */,User/* Lecture 39 */,Photo/* Lecture 40 */,Address/* Lecture 42 */};
 
 /* Lecture 27 */
 class BackendRepository implements BackendRepositoryInterface  {   
@@ -174,6 +174,61 @@ class BackendRepository implements BackendRepositoryInterface  {
         return $path;
     }
     
+    
+    /* Lecture 42 */
+    public function getObject($id)
+    {
+        return TouristObject::find($id);
+    }
+    
+    
+    /* Lecture 42 */
+    public function updateObjectWithAddress($id, $request)
+    {
+
+        Address::where('object_id',$id)->update([
+            'street'=>$request->input('street'),
+            'number'=>$request->input('number'),
+            ]);
+
+        $object = TouristObject::find($id);
+
+
+        $object->name = $request->input('name');
+        $object->city_id = $request->input('city');
+        $object->description = $request->input('description');
+
+        $object->save();
+
+        return $object;
+
+    }
+    
+    
+    /* Lecture 42 */
+    public function createNewObjectWithAddress($request)
+    {
+        $object = new TouristObject;
+        $object->user_id = $request->user()->id;
+
+        $object->name = $request->input('name');
+        $object->city_id = $request->input('city');
+        $object->description = $request->input('description');
+
+        $object->save();
+
+
+        $address = new Address;
+        $address->street = $request->input('street');
+        $address->number = $request->input('number');
+        $address->object_id = $object->id;
+        $address->save();
+        $object->address()->save($address);
+
+        return $object;
+    }
+    
+
   
 }
 

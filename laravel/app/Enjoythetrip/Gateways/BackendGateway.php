@@ -83,6 +83,42 @@ class BackendGateway {
         return $this->bR->saveUser($request);
     }
     
+    
+    /* Lecture 42 */
+    public function saveObject($id, $request)
+    {
+
+        $this->validate($request,[
+            'city'=>"required|string",
+            'name'=>"required|string",
+            'street'=>"required|string",
+            'number'=>"required|integer",
+            'description'=>"required|string|min:100",
+        ]);
+        
+        
+        if($id)
+        {
+            $object = $this->bR->updateObjectWithAddress($id, $request);
+        }
+        else
+        {
+            $object = $this->bR->createNewObjectWithAddress($request);
+        }
+
+
+        if ($request->hasFile('objectPictures'))
+        {
+            // to do
+
+        }
+        
+        
+        return $object;
+
+                
+    }
+    
 
 }
 
