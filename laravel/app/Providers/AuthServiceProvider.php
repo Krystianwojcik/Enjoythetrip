@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Providers/AuthServiceProvider.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/Providers/AuthServiceProvider.php **** Copyright netprogs.pl * available only at Udemy.com * further distribution is prohibited  ****
 |--------------------------------------------------------------------------
 */
 
@@ -20,7 +20,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
         'App\Reservation' => 'App\Policies\ReservationPolicy', /* Lecture 35 */
-        'App\Photo' => 'App\Policies\PhotoPolicy' /* Lecture 39 */
+        'App\Photo' => 'App\Policies\PhotoPolicy', /* Lecture 39 */
+        'App\TouristObject' => 'App\Policies\ObjectPolicy', /* Lecture 43 */
+        'App\Article' => 'App\Policies\ArticlePolicy' /* Lecture 45 */
     ];
 
     /**

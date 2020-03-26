@@ -1,14 +1,14 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Enjoythetrip/Repositories/BackendRepository.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/Enjoythetrip/Repositories/BackendRepository.php **** Copyright netprogs.pl * available only at Udemy.com * further distribution is prohibited  ****
 |--------------------------------------------------------------------------
 */
 
 namespace App\Enjoythetrip\Repositories; /* Lecture 27 */
 
 use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;  /* Lecture 27 */
-use App\{TouristObject/* Lecture 28 */,Reservation/* Lecture 30 */,City/* Lecture 37 */,User/* Lecture 39 */,Photo/* Lecture 40 */,Address/* Lecture 42 */};
+use App\{TouristObject/* Lecture 28 */,Reservation/* Lecture 30 */,City/* Lecture 37 */,User/* Lecture 39 */,Photo/* Lecture 40 */,Address/* Lecture 42 */,Article/* Lecture 45 */};
 
 /* Lecture 27 */
 class BackendRepository implements BackendRepositoryInterface  {   
@@ -226,6 +226,43 @@ class BackendRepository implements BackendRepositoryInterface  {
         $object->address()->save($address);
 
         return $object;
+    }
+    
+    
+    /* Lecture 43 */
+    public function saveObjectPhotos(TouristObject $object, string $path)
+    {
+
+        $photo = new Photo;
+        $photo->path = $path;
+        return $object->photos()->save($photo);
+
+    }
+    
+    
+    /* Lecture 45 */
+    public function saveArticle($object_id,$request)
+    {
+            return Article::create([
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+            'user_id' => $request->user()->id,
+            'object_id' =>$object_id,
+            'created_at' => new \DateTime(),
+        ]);
+    }
+    
+    /* Lecture 45 */
+    public function getArticle($id)
+    {
+        return Article::find($id);
+    }
+    
+    
+    /* Lecture 45 */
+    public function deleteArticle(Article $article)
+    {
+        return  $article->delete();
     }
     
 

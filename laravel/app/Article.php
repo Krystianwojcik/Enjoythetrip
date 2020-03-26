@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Article.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/Article.php **** Copyright netprogs.pl * available only at Udemy.com * further distribution is prohibited  ****
 |--------------------------------------------------------------------------
 */
 
@@ -15,6 +15,9 @@ class Article extends Model
 {
     
     use Enjoythetrip\Presenters\ArticlePresenter; /* Lecture 23 */
+    
+    protected $guarded = []; /* Lecture 45 */
+    public $timestamps = false; /* Lecture 45 */
     
     /* Lecture 16 */
     public function user()

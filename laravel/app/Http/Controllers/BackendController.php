@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Http/Controllers/BackendController.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/Http/Controllers/BackendController.php **** Copyright netprogs.pl * available only at Udemy.com * further distribution is prohibited  ****
 |--------------------------------------------------------------------------
 */
 
@@ -98,25 +98,29 @@ class BackendController extends Controller
     
     
     /* Lecture 6 */
-    public function saveobject($id = null, Request $request)
+    public function saveobject($id = null, Request $request /* Lecture 41 two args */)
     {
-        if($request->isMethod('post')) {
-            if($id) {
-                $this->authorize('checkOwner', $this->bR->getObject($id));
-            }
-            $this->bG->saveObject($id,$request);
-            
-            if($id) {
-                return redirect()->back();
-            } else {
-                return redirect()->route('myObjects');
-            }
+        /* Lecture 41 */
+        if($request->isMethod('post'))
+        {
+            if($id)
+            $this->authorize('checkOwner', $this->bR->getObject($id));
+
+            $this->bG->saveObject($id, $request);
+
+            if($id)
+            return redirect()->back();
+            else
+            return redirect()->route('myObjects');
+
         }
-        if($id) {
-            return view('backend.saveobject', ['object'=>$this->bR->getObject($id), 'cities'=>$this->bR->getCities()]);
-        } else {
-            return view('backend.saveobject', ['cities'=>$this->bR->getCities()]);
-        }
+
+
+        /* Lecture 41 */
+        if($id)
+        return view('backend.saveobject',['object'=>$this->bR->getObject($id),'cities'=>$this->bR->getCities()]);
+        else
+        return view('backend.saveobject',['cities'=>$this->bR->getCities()]);
     }
     
     /* Lecture 6 */
@@ -157,6 +161,38 @@ class BackendController extends Controller
         if (!\Request::ajax()) /* Lecture 35 */
         return redirect()->back(); /* Lecture 34 */
     }
+    
+    
+    /* Lecture 44 */
+    public function deleteArticle($id)
+    {
+        $article =  $this->bR->getArticle($id); /* Lecture 45 */
+        
+        $this->authorize('checkOwner', $article); /* Lecture 45 */
+        
+        $this->bR->deleteArticle($article); /* Lecture 45 */
+
+        return redirect()->back(); /* Lecture 45 */ 
+    }
+    
+    
+    /* Lecture 44 */
+    public function saveArticle($object_id = null, Request $request /* Lecture 45 */)
+    {
+        /* Lecture 45 */
+        if(!$object_id) 
+        {
+           $this->flashMsg ('danger', __('First add an object')); 
+           return redirect()->back();
+        }
+
+        $this->authorize('checkOwner', $this->bR->getObject($object_id)); /* Lecture 45 */
+
+        $this->bG->saveArticle($object_id,$request); /* Lecture 45 */
+
+        return redirect()->back(); /* Lecture 45 */
+    }
+    
     
 }
 

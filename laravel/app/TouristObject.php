@@ -13,8 +13,9 @@ use Illuminate\Support\Facades\Auth; /* Lecture 24 */
 /* Lecture 12 */
 class TouristObject extends Model
 {
-
+    
     protected $table = 'objects';
+    public $timestamps = false; /* Lecture 44 */
     
     use Enjoythetrip\Presenters\ObjectPresenter; /* Lecture 23 */
     

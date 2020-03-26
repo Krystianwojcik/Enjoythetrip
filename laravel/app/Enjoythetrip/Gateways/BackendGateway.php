@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Enjoythetrip/Gateways/BackendGateway.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| app/Enjoythetrip/Gateways/BackendGateway.php **** Copyright netprogs.pl * available only at Udemy.com * further distribution is prohibited  ****
 |--------------------------------------------------------------------------
 */
 namespace App\Enjoythetrip\Gateways; /* Lecture 27 */
@@ -109,7 +109,16 @@ class BackendGateway {
 
         if ($request->hasFile('objectPictures'))
         {
-            // to do
+            
+            $this->validate($request, \App\Photo::imageRules($request,'objectPictures')); /* Lecture 43 */
+            
+            /* Lecture 43 */
+            foreach($request->file('objectPictures') as $picture)
+            {
+                $path = $picture->store('objects', 'public');
+
+                $this->bR->saveObjectPhotos($object, $path);
+            }
 
         }
         
@@ -117,6 +126,19 @@ class BackendGateway {
         return $object;
 
                 
+    }
+    
+    
+    /* Lecture 45 */
+    public function saveArticle($object_id,$request)
+    {
+        $this->validate($request,[
+            'content'=>"required|min:10",
+            'title'=>"required|min:3",
+        ]);
+
+        return $this->bR->saveArticle($object_id,$request);
+
     }
     
 
