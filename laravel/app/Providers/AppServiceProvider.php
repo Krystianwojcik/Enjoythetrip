@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /* Lecture 49 */
+        View::composer('backend.*', '\App\Enjoythetrip\ViewComposers\BackendComposer');
+        
+        
         /* Lecture 16 */
         View::composer('frontend.*', function ($view) {
             $view->with('placeholder', asset('images/placeholder.jpg'));

@@ -18,6 +18,9 @@ return [
     'saveobject' => 'saveobject',
     'profile' => 'profile',
     'saveroom' => 'saveroom',
+    'deleteobject' => 'deleteobject', /* Lecture 46 */
+    'deleteroom' => 'deleteroom', /* Lecture 47 */
     
     
 ];
+

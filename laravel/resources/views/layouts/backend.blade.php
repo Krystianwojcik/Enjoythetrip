@@ -1,6 +1,6 @@
 <!--
 |--------------------------------------------------------------------------
-| resources/views/layouts/backend.blade.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
+| resources/views/layouts/backend.blade.php *** Copyright netprogs.pl | avaiable only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 -->
 <!DOCTYPE html>
@@ -31,6 +31,8 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
+
+      
        
         
         <!-- Lecture 27 -->
@@ -67,17 +69,29 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
+                        
+                        <!-- Lecture 49 -->
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="button__badge">2</span> <span class="glyphicon glyphicon-envelope"></span> <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li class="unread_notification"><a href="#">John Doe reserved room number 26 in X object on 10/20/2017</a></li>
-                                <li><a href="#">John Doe canceled his reservation for room number 4 in X object on 010/15/201</a></li>
-                                <li class="unread_notification"><a href="#">John Doe reserved room number 7 in X object on 09/30/2017</a></li>
-                                <li><a href="#">Your reservation for room number 6 in the X object on 09/12/2017 has been confirmed</a></li>
-                                <li><a href="#">Your reservation for room number 9 in the X object on 08/29/2017 has been canceled</a></li>
-                                <li><a href="#">Your reservation for room number 10 in the X object on 08/28/2017 has been canceled</a></li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                @if( $ncounter = count($notifications->where('status',0)) )
+                                <span id="app-notifications-count" class="button__badge">{{ $ncounter }}</span>
+                                @else
+                                <span id="app-notifications-count" class="button__badge hidden">0</span>
+                                @endif
+                                <span class="glyphicon glyphicon-envelope"></span> <span class="caret"></span></a>
+                            <ul id="app-notifications-list" class="dropdown-menu">
+                                @foreach( $notifications as $notification )
+                                    @if($notification->status)
+                                    <li><a>{{ $notification->content }}</a></li>
+                                    @else
+                                    <li class="unread_notification"><a href="{{ $notification->id }}">{{ $notification->content }}</a></li>
+                                    @endif
+
+                                @endforeach
+
                             </ul>
                         </li>
+                        
                         <li><p class="navbar-text">{{ Auth::user()->FullName /* Lecture 34 */ }}</p></li>
                         <li><a href="{{ route('profile') }}">Profile</a></li>
                         
@@ -104,28 +118,33 @@
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <li class="active"><a href="{{ route('adminHome') }}">Booking calendar <span class="sr-only">(current)</span></a></li>
-                        @if( Auth::user()->hasRole(['owner', 'admin']))
+
+                        <!-- Lecture 36 -->
+                        @if( Auth::user()->hasRole(['owner','admin'])  )
                         <li><a href="{{ route('myObjects') }}">My tourist objects</a></li>
                         <li><a href="{{ route('saveObject') }}">Add a new tourist object</a></li>
                         @endif
-                        @if( Auth::user()->hasRole(['admin']))
+                        @if( Auth::user()->hasRole(['admin']) )
                         <li><a href="{{ route('cities.index') }}">Cities</a></li>
                         @endif
+
                     </ul>
                 </div>
 
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-                    @if( $errors->any() )
-                    
+                    <!-- Lecture 38 -->
+                    @if ($errors->any())
+                    <br>
                     <div class="alert alert-danger">
                         <ul>
-                            @foreach($errors->all() as $error)
-                            <li>{{$error}}</li>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
                     @endif
+                
 
                     <br> <!-- Lecture 35 -->
 

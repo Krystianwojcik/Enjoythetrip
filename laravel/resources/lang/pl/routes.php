@@ -18,6 +18,8 @@ return [
     'saveobject' => 'zapiszobjekt',
     'profile' => 'profil',
     'saveroom' => 'zapiszpokoj',
+    'deleteobject' => 'usunobiekt', /* Lecture 46 */
+    'deleteroom' => 'usunpokoj', /* Lecture 47 */
     
     
 ];

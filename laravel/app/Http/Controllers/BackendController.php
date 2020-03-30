@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Http/Controllers/BackendController.php **** Copyright netprogs.pl * available only at Udemy.com * further distribution is prohibited  ****
+| app/Http/Controllers/BackendController.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
 
@@ -13,6 +13,7 @@ use App\Enjoythetrip\Interfaces\BackendRepositoryInterface; /* Lecture 27 */
 use App\Enjoythetrip\Gateways\BackendGateway; /* Lecture 27 */
 use Illuminate\Support\Facades\Auth; /* Lecture 39 */
 use Illuminate\Support\Facades\Storage; /* Lecture 40 */
+use App\Events\ReservationConfirmedEvent; /* Lecture 54 */
 
 
 class BackendController extends Controller
@@ -38,9 +39,12 @@ class BackendController extends Controller
     }
 
     /* Lecture 6 */
-    public function myobjects()
+    public function myobjects(Request $request /* Lecture 46 */)
     {
-        return view('backend.myobjects');
+        $objects = $this->bR->getMyObjects($request); /* Lecture 46 */
+        //dd($objects); /* Lecture 46 */
+
+        return view('backend.myobjects',['objects'=>$objects]/* Lecture 46 */);
     }
     
     /* Lecture 6 */
@@ -123,10 +127,42 @@ class BackendController extends Controller
         return view('backend.saveobject',['cities'=>$this->bR->getCities()]);
     }
     
-    /* Lecture 6 */
-    public function saveroom()
+    /* Lecture 47 */
+    public function saveRoom($id = null, Request $request)
     {
-        return view('backend.saveroom');
+
+        if($request->isMethod('post'))
+        {
+            if($id) // editing room
+            $this->authorize('checkOwner', $this->bR->getRoom($id));
+            else // adding a new room
+            $this->authorize('checkOwner', $this->bR->getObject($request->input('object_id')));   
+
+            $this->bG->saveRoom($id, $request);
+            
+            if($id)
+            return redirect()->back();
+            else
+            return redirect()->route('myObjects');
+
+        }
+
+        if($id)
+        return view('backend.saveroom',['room'=>$this->bR->getRoom($id)]);
+        else
+        return view('backend.saveroom',['object_id'=>$request->input('object_id')]);
+    }
+    
+    /* Lecture 47 */
+    public function deleteRoom($id)
+    {
+        $room =  $this->bR->getRoom($id); /* Lecture 48 */
+        
+        $this->authorize('checkOwner', $room); /* Lecture 48 */
+
+        $this->bR->deleteRoom($room); /* Lecture 48 */
+
+        return redirect()->back(); /* Lecture 48 */
     }
     
     
@@ -141,7 +177,8 @@ class BackendController extends Controller
         
         $this->flashMsg ('success', __('Reservation has been confirmed'));  /* Lecture 35 */
         
-
+        event( new ReservationConfirmedEvent($reservation) ); /* Lecture 54 */
+        
         if (!\Request::ajax()) /* Lecture 35 */
         return redirect()->back(); /* Lecture 35 */
     }
@@ -191,6 +228,32 @@ class BackendController extends Controller
         $this->bG->saveArticle($object_id,$request); /* Lecture 45 */
 
         return redirect()->back(); /* Lecture 45 */
+    }
+    
+    
+    /* Lecture 46 */
+    public function deleteObject($id)
+    {
+        $this->authorize('checkOwner', $this->bR->getObject($id));
+        
+        $this->bR->deleteObject($id);
+               
+        return redirect()->back();
+    
+    }
+    
+    
+    /* Lecture 53 */
+    public function getNotifications()
+    {
+        return response()->json( $this->bR->getNotifications() ); // for mobile
+    }
+    
+    
+    /* Lecture 53 */
+    public function setReadNotifications(Request $request)
+    {
+        return  $this->bR->setReadNotifications($request); // for mobile
     }
     
     

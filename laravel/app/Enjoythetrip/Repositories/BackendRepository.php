@@ -1,14 +1,16 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/Enjoythetrip/Repositories/BackendRepository.php **** Copyright netprogs.pl * available only at Udemy.com * further distribution is prohibited  ****
+| app/Enjoythetrip/Repositories/BackendRepository.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
 
 namespace App\Enjoythetrip\Repositories; /* Lecture 27 */
 
 use App\Enjoythetrip\Interfaces\BackendRepositoryInterface;  /* Lecture 27 */
-use App\{TouristObject/* Lecture 28 */,Reservation/* Lecture 30 */,City/* Lecture 37 */,User/* Lecture 39 */,Photo/* Lecture 40 */,Address/* Lecture 42 */,Article/* Lecture 45 */};
+use Illuminate\Support\Facades\Auth; /* Lecture 53 */
+use App\{TouristObject/* Lecture 28 */,Reservation/* Lecture 30 */,City/* Lecture 37 */,User/* Lecture 39 */,Photo/* Lecture 40 */,Address/* Lecture 42 */,Article/* Lecture 45 */,Room/* Lecture 47 */,Notification/* Lecture 50 */};
+
 
 /* Lecture 27 */
 class BackendRepository implements BackendRepositoryInterface  {   
@@ -265,8 +267,108 @@ class BackendRepository implements BackendRepositoryInterface  {
         return  $article->delete();
     }
     
+    
+    /* Lecture 46 */
+    public function getMyObjects($request)
+    {
+        return TouristObject::where('user_id',$request->user()->id)->get();
+    }
+    
+    
+    /* Lecture 46 */
+    public function deleteObject($id)
+    {
+        return TouristObject::where('id',$id)->delete();
+    }
+    
+    
+    /* Lecture 47 */
+    public function getRoom($id)
+    {
+        return Room::find($id);
+    }
+    
+    
+    /* Lecture 48 */
+    public function updateRoom($id,$request)
+    {
+        $room = Room::find($id);
+        $room->room_number = $request->input('room_number');
+        $room->room_size = $request->input('room_size');
+        $room->price = $request->input('price');
+        $room->description = $request->input('description');
 
-  
+        $room->save();
+
+        return $room;
+    }
+    
+    
+    /* Lecture 48 */
+    public function createNewRoom($request)
+    {
+        $room = new Room;
+        $object = TouristObject::find( $request->input('object_id') );
+        $room->object_id = $request->input('object_id') ;
+
+        $room->room_number = $request->input('room_number');
+        $room->room_size = $request->input('room_size');
+        $room->price = $request->input('price');
+        $room->description = $request->input('description');
+
+        $room->save();
+
+        $object->rooms()->save($room);
+
+        return $room;
+    }
+    
+    
+    /* Lecture 48 */
+    public function saveRoomPhotos(Room $room, string $path)
+    {
+        $photo = new Photo;
+        $photo->path = $path;
+        return $room->photos()->save($photo); 
+    }
+    
+    
+    /* Lecture 48 */
+    public function deleteRoom(Room $room)
+    {
+        return $room->delete();
+    }
+    
+    
+    /* Lecture 50 */
+    public function setReadNotifications($request)
+    {
+       return Notification::where('id', $request->input('id'))
+                        ->update(['status' => 1]);
+    }
+    
+    
+    /* Lecture 52 */
+    public function getUserNotifications($id)
+    {
+        return Notification::where('user_id', $id)->where('shown', 0)->get();
+    }
+    
+    
+    /* Lecture 52 */
+    public function setShownNotifications($request)
+    {
+        return Notification::whereIn('id', $request->input('idsOfNotShownNotifications'))
+                        ->update(['shown' => 1]);
+    }
+    
+    
+    /* Lecture 53 */
+    public function getNotifications()
+    {
+        return Notification::where('user_id', Auth::user()->id )->where('status',0)->get(); // for mobile
+    }
+    
 }
 
 

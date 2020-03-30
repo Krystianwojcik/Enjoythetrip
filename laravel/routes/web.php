@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| routes/web.php *** Copyright netprogs.pl | avaiable only at Udemy.com | further distribution is prohibited  ***
+| routes/web.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
 
@@ -34,24 +34,36 @@ Route::post('/addComment/{commentable_id}/{type}', 'FrontendController@addCommen
 Route::post('/makeReservation/{room_id}/{city_id}', 'FrontendController@makeReservation')->name('makeReservation'); /* Lecture 26 */
 
  
-Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){  /* Lecture 6 Lecture 7 'middleware'=>'auth' */  
+Route::group(['prefix'=>'admin','middleware'=>'auth'],function(){  /* Lecture 6 Lecture 7 'middleware'=>'auth' */ 
+    
+  //for json mobile
+  Route::get('/getNotifications', 'BackendController@getNotifications'); /* Lecture 53 */
+  Route::post('/setReadNotifications', 'BackendController@setReadNotifications'); /* Lecture 53 */
     
   Route::get('/','BackendController@index')->name('adminHome'); /* Lecture 6 */  
   Route::get(trans('routes.myobjects'),'BackendController@myobjects')->name('myObjects'); /* Lecture 6 */  
   Route::match(['GET','POST'],trans('routes.saveobject').'/{id?}','BackendController@saveObject')->name('saveObject'); /* Lecture 6 Lecture 41 match(['GET','POST'];/{id?} */  
   Route::match(['GET','POST'],trans('routes.profile'),'BackendController@profile')->name('profile'); /* Lecture 6  Lecture 39 match(['GET','POST'] */ 
   Route::get('/deletePhoto/{id}', 'BackendController@deletePhoto')->name('deletePhoto'); /* Lecture 39 */
-  Route::get(trans('routes.saveroom'),'BackendController@saveRoom')->name('saveRoom'); /* Lecture 6 */  
+  Route::match(['GET','POST'],trans('routes.saveroom').'/{id?}', 'BackendController@saveRoom')->name('saveRoom'); /* Lecture 47 */  
+  Route::get(trans('routes.deleteroom').'/{id}', 'BackendController@deleteRoom')->name('deleteRoom'); /* Lecture 47 */
   
   Route::get('/deleteArticle/{id}', 'BackendController@deleteArticle')->name('deleteArticle'); /* Lecture 44 */
   Route::post('/saveArticle/{id?}', 'BackendController@saveArticle')->name('saveArticle'); /* Lecture 44 */
   
   Route::get('/ajaxGetReservationData', 'BackendController@ajaxGetReservationData'); /* Lecture 30 */
+  Route::get('/ajaxSetReadNotification', 'BackendController@ajaxSetReadNotification'); /* Lecture 50 */
+  Route::get('/ajaxGetNotShownNotifications', 'BackendController@ajaxGetNotShownNotifications'); /* Lecture 51 */
+  Route::get('/ajaxSetShownNotifications', 'BackendController@ajaxSetShownNotifications'); /* Lecture 52 */
   
   Route::get('/confirmReservation/{id}', 'BackendController@confirmReservation')->name('confirmReservation'); /* Lecture 33 */
   Route::get('/deleteReservation/{id}', 'BackendController@deleteReservation')->name('deleteReservation'); /* Lecture 33 */
   
   Route::resource('cities', 'CityController'); /* Lecture 37 */
+  
+  Route::get(trans('routes.deleteobject').'/{id}', 'BackendController@deleteObject')->name('deleteObject'); /* Lecture 46 */
+  
+  
     
     
 });

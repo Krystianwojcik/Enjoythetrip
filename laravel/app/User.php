@@ -1,7 +1,7 @@
 <?php
 /*
 |--------------------------------------------------------------------------
-| app/User.php *** Copyright netprogs.pl | avaiable only at Udemy.com | further distribution is prohibited  ***
+| app/User.php *** Copyright netprogs.pl | available only at Udemy.com | further distribution is prohibited  ***
 |--------------------------------------------------------------------------
 */
 
@@ -59,6 +59,12 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+    
+    /* Lecture 49 */
+    public function unotifications()
+    {
+        return $this->hasMany('App\Notification');
     }
     
     /* Lecture 27 */
